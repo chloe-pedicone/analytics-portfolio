@@ -165,8 +165,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <h2>Selected work</h2>
-        <p>Public-data projects include live demos. Case studies from my job are anonymized: they describe patterns and decisions, with no data or employer code.</p>
+        <h2>Work</h2>
+        <p>Production case studies (anonymized), public-data builds with live demos, and earlier analytics projects. Filter by the role you're hiring for.</p>
       </div>
       <div class="filter" role="group" aria-label="Filter by role">
         <button class="chip" aria-pressed="true" data-role="all">All</button>
@@ -273,6 +273,61 @@
         <div class="tags"><span class="tag">Direct Lake</span><span class="tag">DAX Studio</span><span class="tag">Capacity</span></div>
         <div class="links"><a data-link="repo" data-path="/tree/main/case-studies/04-direct-lake-capacity" href="#">Read case study ↗</a></div>
       </article>
+
+      <!-- Earlier: HCC -->
+      <article class="card" data-roles="da">
+        <div class="meta"><span>2023 · Case study</span><span class="badge">Healthcare</span></div>
+        <h3>Hospital call center: productivity and staffing</h3>
+        <p>An analysis of agent activity across a hospital call center, presented as a 30-slide deck for the call-center manager.</p>
+        <ul>
+          <li>Team and agent utilization, talk and not-ready time</li>
+          <li>Top and bottom performers; weekly FTE staffing plan</li>
+          <li>Productivity model at team and agent level</li>
+        </ul>
+        <div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">Presentation</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/earlier-work/01-hospital-call-center-case-study" href="#">View project ↗</a></div>
+      </article>
+
+      <!-- Earlier: Retail SQL + R -->
+      <article class="card" data-roles="da ae">
+        <div class="meta"><span>2023 · Project</span><span class="badge">Retail</span></div>
+        <h3>Fashion retail sales analysis</h3>
+        <p>Designed a sales database for a clothing company, then answered merchandising questions with SQL.</p>
+        <ul>
+          <li>8-table relational schema with an EER diagram</li>
+          <li>Revenue by season and category, loyalty, basket value</li>
+          <li>Inactive customers and sales-channel effectiveness</li>
+        </ul>
+        <div class="tags"><span class="tag">MySQL</span><span class="tag">R</span><span class="tag">Data modeling</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/earlier-work/02-fashion-retail-sql-r" href="#">View project ↗</a></div>
+      </article>
+
+      <!-- Earlier: Customer EDA in R -->
+      <article class="card" data-roles="da">
+        <div class="meta"><span>2023 · Kaggle</span><span class="badge">Retail</span></div>
+        <h3>Customer shopping behavior EDA</h3>
+        <p>99,457 transactions from 10 shopping malls, explored by demographics, category and payment method.</p>
+        <ul>
+          <li>Descriptive statistics and faceted visualizations</li>
+          <li>4 regression hypotheses on purchase behavior</li>
+        </ul>
+        <div class="tags"><span class="tag">R</span><span class="tag">tidyverse</span><span class="tag">ggplot2</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/earlier-work/03-customer-shopping-eda-r" href="#">View project ↗</a></div>
+      </article>
+
+      <!-- Earlier: ML -->
+      <article class="card" data-roles="da">
+        <div class="meta"><span>2023 · Machine learning</span><span class="badge">3 projects</span></div>
+        <h3>Churn, house prices and Titanic models</h3>
+        <p>Classification and regression projects, each with cross-validation and a written look at what I'd improve.</p>
+        <ul>
+          <li>Telco churn: decision tree vs logistic regression</li>
+          <li>House prices: linear, Lasso and Ridge regression</li>
+          <li>Titanic: decision-tree survival model</li>
+        </ul>
+        <div class="tags"><span class="tag">Python</span><span class="tag">scikit-learn</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/earlier-work" href="#">View projects ↗</a></div>
+      </article>
     </div>
   </div>
 </section>
@@ -295,7 +350,7 @@
     <div class="timeline">
       <div class="job"><div class="when">Jan 2024 – present</div><div><h3>Analytics Developer · <span class="org">Cooper University Hospital</span></h3><p>I build and maintain Fabric data pipelines from the Epic Caboodle warehouse and contact-center systems, and the Power BI semantic models and reports used by operations leaders.</p></div></div>
       <div class="job"><div class="when">May 2024</div><div><h3>MS Business Analytics · <span class="org">Rutgers University</span></h3><p>4.0 GPA.</p></div></div>
-      <div class="job"><div class="when">Oct 2018 – Sep 2022</div><div><h3>Assistant Merchandising Manager · <span class="org">UNIQLO Vietnam</span></h3><p>I lead men's clothing business with 2 subordinates.</p></div></div>
+      <div class="job"><div class="when">Oct 2018 – Sep 2022</div><div><h3>Assistant Merchandising Manager · <span class="org">UNIQLO Vietnam</span></h3><p>[Add one line: e.g. the assortment, sell-through or inventory analysis you owned.]</p></div></div>
     </div>
   </div>
 </section>
@@ -322,9 +377,9 @@
 <script>
   // ============ EDIT ME ============
   const LINKS = {
-    repo: "https://github.com/chloe-pedicone/analytics-portfolio",
-    linkedin: "https://www.linkedin.com/in/lethduong971229/",
-    email: "chloepedicone@gmail.com",                 
+    repo: "https://github.com/ChloePedicone97/analytics-portfolio",
+    linkedin: "https://www.linkedin.com/in/<your-handle>/",
+    email: "",                 // e.g. "you@example.com"
     "demo-p1": "",             // Power BI "Publish to web" link, or a GIF/video URL
     "demo-p2": ""
   };

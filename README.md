@@ -1,10 +1,10 @@
-# Analytics Portfolio · Chloe Pedicone
+# Analytics Portfolio · Chloe [Last Name]
 
 **Power BI Developer · Data Analyst · Analytics Engineer · Microsoft Fabric**
 
 I build end-to-end analytics on Microsoft Fabric: incremental PySpark/Delta pipelines from a healthcare data warehouse up to fast, trusted Power BI models. Before analytics engineering I spent four years in retail merchandising, so I start from the business question.
 
-🌐 **Website:** https://chloe-pedicone.github.io/analytics-portfolio/ · 💼 **LinkedIn:** https://www.linkedin.com/in/lethduong971229/ · ✉️ `chloepedicone@gmail.com`
+🌐 **Website:** [chloepedicone97.github.io/analytics-portfolio](https://chloepedicone97.github.io/analytics-portfolio/) · 💼 **LinkedIn:** `[link]` · ✉️ `[email]`
 
 ---
 
@@ -22,6 +22,16 @@ I build end-to-end analytics on Microsoft Fabric: incremental PySpark/Delta pipe
 | [CS2 · Surgical pipeline refactor](case-studies/02-surgical-pipeline-refactor/) | 3 notebooks repeating the same cleaning → shared spine plus a parallel DAG and incremental loads |
 | [CS3 · Tableau Prep → PySpark migration](case-studies/03-tableau-prep-migration/) | 79-node flow ported; 4 matching bugs found and fixed |
 | [CS4 · Direct Lake capacity investigation](case-studies/04-direct-lake-capacity/) | ~315% capacity spike diagnosed → key, date-table and model fixes |
+
+## Earlier work (2023)
+Python, R, SQL and machine-learning projects, including a hospital call-center productivity case study. [See all 8 →](earlier-work/)
+
+| Project | Tools |
+|---|---|
+| [Hospital call center: productivity and staffing](earlier-work/01-hospital-call-center-case-study/) | Python, PowerPoint |
+| [Fashion retail sales analysis](earlier-work/02-fashion-retail-sql-r/) | MySQL, R |
+| [Customer shopping behavior EDA](earlier-work/03-customer-shopping-eda-r/) | R |
+| [House prices · Titanic · Telco churn](earlier-work/) | Python, scikit-learn |
 
 ## Reusable code
 - [`shared/fabric_utils`](shared/fabric_utils/): watermark + lookback Delta MERGE, hash-based SCD1 loads, a `runMultiple` DAG builder with cycle checks
