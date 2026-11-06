@@ -10,7 +10,6 @@ try:  # local run: make <repo>/shared importable no matter which folder you run 
 except NameError:  # Fabric notebook has no __file__: upload fabric_utils as a library/resource
     pass
 
-from pyspark.sql import Window
 from pyspark.sql import functions as F
 
 from fabric_utils import get_spark  # noqa: E402
@@ -22,9 +21,10 @@ silver = spark.table(f"{SCHEMA}.silver_service_requests")
 
 
 def dim(col: str, key: str):
-    """Small dimension with an integer surrogate key (integer keys are cheaper to relate)."""
-    w = Window.orderBy(col)
-    return silver.select(col).distinct().withColumn(key, F.row_number().over(w).cast("int"))
+       """Small dimension with a deterministic surrogate key: the same name gets the same key on
+       every run, so a new name can't shift existing keys and a half-finished run can't leave
+       dims and fact mismatched. xxhash64 -> bigint (Power BI Int64)."""
+       return silver.select(col).distinct().withColumn(key, F.xxhash64(col))
 
 
 dim_agency = dim("Agency", "AgencyKey")
@@ -43,9 +43,9 @@ fact = (
     )
 )
 
-# Full rebuild is fine at this size (a few million rows). Surrogate keys from
-# row_number are only stable within one rebuild, so dims and fact are always
-# written together.
+# Full rebuild is fine at this size (a few million rows). Keys are hashes of the
+# name, so they are stable across rebuilds.
+
 for name, df in [("dim_agency", dim_agency), ("dim_complaint_type", dim_complaint),
                  ("dim_borough", dim_borough), ("fact_service_request", fact)]:
     df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(f"{SCHEMA}.{name}")
