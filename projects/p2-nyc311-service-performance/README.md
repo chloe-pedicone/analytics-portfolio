@@ -41,6 +41,6 @@ flowchart LR
 ## Run locally
 ```bash
 pip install pyspark==3.5.3 delta-spark==3.2.1 requests holidays
-# configure Spark with Delta (see projects/p3-synthea-medallion/tests/conftest.py for a session example)
+# configure Spark with Delta (see the repo-root conftest.py for a session example)
 python notebooks/01_bronze_ingest.py && python notebooks/02_silver_transform.py && python notebooks/03_gold_model.py
 ```
