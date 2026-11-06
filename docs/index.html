@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chloe · Power BI &amp; Analytics Engineering Portfolio</title>
+<meta name="description" content="Power BI developer and analytics engineer building Microsoft Fabric pipelines and Power BI models for healthcare.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============ EDIT ME: one place for your links ============ */
+  /* (also edit the REPO / LINKEDIN / EMAIL constants in the script at the bottom) */
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --ink: #1c1f24;
+    --muted: #5b616b;
+    --line: #e3dfd6;
+    --accent: #0f6e6a;          /* deep teal */
+    --accent-soft: #e2f0ee;
+    --warm: #b5532c;            /* used once: the "live demo" badge */
+    --radius: 14px;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121417; --surface: #1a1d22; --ink: #ecebe7; --muted: #a2a7b0;
+      --line: #2b2f36; --accent: #5cc3bb; --accent-soft: #17302e; --warm: #e58a62;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-family: var(--serif); font-weight: 600; font-size: 19px; text-decoration: none; }
+  .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; font-size: 14px; }
+  nav ul a { text-decoration: none; color: var(--muted); }
+  nav ul a:hover { color: var(--ink); }
+  @media (max-width: 680px) { nav ul { display: none; } }
+
+  /* hero */
+  header.hero { padding: 88px 0 56px; }
+  .eyebrow { font: 500 13px/1 var(--mono); letter-spacing: .04em; color: var(--accent); text-transform: uppercase; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(36px, 5.4vw, 60px); line-height: 1.08; letter-spacing: -.01em; margin: 18px 0 20px; max-width: 20ch; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .lede { font-size: 19px; color: var(--muted); max-width: 60ch; margin: 0 0 30px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px; font-weight: 500; font-size: 15px; text-decoration: none; border: 1px solid var(--line); background: var(--surface); }
+  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn:hover { transform: translateY(-1px); }
+
+  /* pipeline strip */
+  .pipeline { margin-top: 56px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+  .stage { padding: 18px 16px; position: relative; border-right: 1px solid var(--line); }
+  .stage:last-child { border-right: 0; background: var(--accent-soft); }
+  .stage b { display: block; font: 600 14px/1.3 var(--sans); }
+  .stage small { color: var(--muted); font-size: 12.5px; line-height: 1.4; display: block; margin-top: 4px; }
+  .stage .n { font: 500 11px var(--mono); color: var(--accent); }
+  .stage:not(:last-child)::after { content: "→"; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); background: var(--surface); color: var(--muted); font-size: 13px; z-index: 1; padding: 2px 0; }
+  @media (max-width: 760px) { .pipeline { grid-template-columns: 1fr 1fr; } .stage { border-bottom: 1px solid var(--line); } .stage::after { display: none; } .stage:last-child { grid-column: span 2; border-bottom: 0; } }
+
+  /* sections */
+  section { padding: 64px 0; border-top: 1px solid var(--line); }
+  .sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 32px; line-height: 1.15; margin: 0; }
+  .sec-head p { margin: 6px 0 0; color: var(--muted); max-width: 56ch; }
+
+  /* role filter */
+  .filter { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font: 500 13px var(--sans); padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .chip[aria-pressed="true"] { color: #0d1413; } }
+
+  /* cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 22px 18px; display: flex; flex-direction: column; transition: opacity .2s, transform .2s; }
+  .card[hidden] { display: none; }
+  .card .meta { display: flex; justify-content: space-between; align-items: center; font: 500 12px var(--mono); color: var(--muted); }
+  .badge { font: 600 11px var(--sans); letter-spacing: .03em; padding: 3px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); text-transform: uppercase; }
+  .badge.live { background: color-mix(in srgb, var(--warm) 14%, transparent); color: var(--warm); }
+  .card h3 { font: 600 19px/1.3 var(--sans); margin: 12px 0 8px; }
+  .card p { margin: 0 0 14px; color: var(--muted); font-size: 14.5px; }
+  .card ul { margin: 0 0 16px; padding-left: 18px; font-size: 14px; }
+  .card ul li { margin-bottom: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .tag { font: 400 12px var(--mono); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); }
+  .links { display: flex; gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 14px; font-weight: 500; }
+  .links a { text-decoration: none; color: var(--accent); }
+  .links a:hover { text-decoration: underline; }
+  .links .todo { color: var(--muted); font-weight: 400; }
+
+  /* skills */
+  .skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+  .skill { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .skill h3 { font: 600 15px var(--sans); margin: 0 0 10px; }
+  .skill p { margin: 0; font-size: 14px; color: var(--muted); }
+
+  /* experience */
+  .timeline { display: grid; gap: 0; }
+  .job { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .job:last-child { border-bottom: 0; }
+  .job .when { font: 500 13px var(--mono); color: var(--muted); padding-top: 3px; }
+  .job h3 { margin: 0; font: 600 17px var(--sans); }
+  .job .org { color: var(--accent); font-weight: 500; }
+  .job p { margin: 6px 0 0; color: var(--muted); font-size: 14.5px; }
+  @media (max-width: 640px) { .job { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* contact */
+  .contact { background: var(--ink); color: var(--bg); border-radius: 22px; padding: 44px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 24px; }
+  .contact h2 { color: var(--bg); }
+  .contact p { margin: 8px 0 0; opacity: .75; max-width: 46ch; }
+  .contact .btn { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 35%, transparent); }
+  .contact .btn.primary { background: var(--bg); color: var(--ink); }
+  .contact code { font: 13px var(--mono); opacity: .8; }
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 13px; }
+  .note { font-size: 13px; color: var(--muted); margin-top: 18px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">Chloe<span>.</span></a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">Power BI · Analytics Engineering · Microsoft Fabric</div>
+    <h1>From messy source data to <em>reports people trust.</em></h1>
+    <p class="lede">I'm Chloe, an Analytics Developer in healthcare. I build incremental PySpark and Delta pipelines on Microsoft Fabric, and the Power BI models on top of them. Before analytics engineering, I spent four years in retail merchandising, so I start from the business question.</p>
+    <div class="cta">
+      <a class="btn primary" href="#work">See the work</a>
+      <a class="btn" data-link="repo" href="#">GitHub repo ↗</a>
+      <a class="btn" data-link="linkedin" href="#">LinkedIn ↗</a>
+    </div>
+
+    <div class="pipeline" aria-label="How I work, end to end">
+      <div class="stage"><span class="n">01</span><b>Source</b><small>Clinical warehouse, contact-center and public APIs</small></div>
+      <div class="stage"><span class="n">02</span><b>Bronze</b><small>Raw landing, watermark-based increments</small></div>
+      <div class="stage"><span class="n">03</span><b>Silver</b><small>Typed, deduplicated, business rules materialised</small></div>
+      <div class="stage"><span class="n">04</span><b>Gold</b><small>Star schema, integer keys, data-quality gates</small></div>
+      <div class="stage"><span class="n">05</span><b>Power BI</b><small>Direct Lake, DAX, calc groups, field parameters</small></div>
+    </div>
+  </div>
+</header>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>Selected work</h2>
+        <p>Public-data projects include live demos. Case studies from my job are anonymized: they describe patterns and decisions, with no data or employer code.</p>
+      </div>
+      <div class="filter" role="group" aria-label="Filter by role">
+        <button class="chip" aria-pressed="true" data-role="all">All</button>
+        <button class="chip" aria-pressed="false" data-role="pbi">Power BI Dev</button>
+        <button class="chip" aria-pressed="false" data-role="da">Data Analyst</button>
+        <button class="chip" aria-pressed="false" data-role="ae">Analytics Eng</button>
+        <button class="chip" aria-pressed="false" data-role="de">Fabric / DE</button>
+      </div>
+    </div>
+
+    <div class="grid" id="cards">
+      <!-- P2 -->
+      <article class="card" data-roles="pbi da ae de">
+        <div class="meta"><span>P2 · Public data</span><span class="badge live">Live demo</span></div>
+        <h3>NYC 311 service performance</h3>
+        <p>Which agencies miss their SLA, and is it getting better? This is the public twin of my contact-center KPI work.</p>
+        <ul>
+          <li>Incremental API ingestion with a 3-day lookback MERGE</li>
+          <li>Business vs after-hours classification, built in Silver</li>
+          <li>SLA year over year, with metric and date-grain switching</li>
+        </ul>
+        <div class="tags"><span class="tag">PySpark</span><span class="tag">Delta</span><span class="tag">DAX</span><span class="tag">Field parameters</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/projects/p2-nyc311-service-performance" href="#">Code ↗</a><a data-link="demo-p2" href="#">Report ↗</a></div>
+      </article>
+
+      <!-- CS1 -->
+      <article class="card" data-roles="pbi da ae de">
+        <div class="meta"><span>CS1 · Case study</span><span class="badge">Healthcare</span></div>
+        <h3>Contact-center Silver layer and KPI model</h3>
+        <p>Business-hours rules were repeated across DAX measures, and each department had its own rules. I moved them into one materialised column.</p>
+        <ul>
+          <li>Config-driven Delta MERGE loads for 6 fact tables</li>
+          <li>Hash-based SCD Type 1 dimensions</li>
+          <li>Calculation groups, KPI switcher, YoY service level</li>
+        </ul>
+        <div class="tags"><span class="tag">Fabric</span><span class="tag">PySpark</span><span class="tag">Calc groups</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/case-studies/01-contact-center-kpi-model" href="#">Read case study ↗</a></div>
+      </article>
+
+      <!-- P1 -->
+      <article class="card" data-roles="pbi da">
+        <div class="meta"><span>P1 · Public data</span><span class="badge live">Live demo</span></div>
+        <h3>Hospital readmissions benchmarking</h3>
+        <p>How does each hospital's excess readmission ratio rank within its state and nationally? Built on CMS data.</p>
+        <ul>
+          <li>SQL cleaning ("Too Few to Report" → NULL) and DQ checks</li>
+          <li>Rank-in-state and national percentile DAX</li>
+          <li>Decomposition tree by condition</li>
+        </ul>
+        <div class="tags"><span class="tag">T-SQL</span><span class="tag">Star schema</span><span class="tag">DAX</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/projects/p1-cms-readmissions" href="#">Code ↗</a><a data-link="demo-p1" href="#">Report ↗</a></div>
+      </article>
+
+      <!-- P3 -->
+      <article class="card" data-roles="ae de">
+        <div class="meta"><span>P3 · Synthetic data</span><span class="badge">Tested</span></div>
+        <h3>Synthetic patient medallion lakehouse</h3>
+        <p>A Bronze → Silver → Gold build on Synthea patients, with a data-quality gate and unit-tested 30-day readmission logic.</p>
+        <ul>
+          <li>Window-function readmission flags, with overlap handling</li>
+          <li>SCD1 patient dimension, integer-keyed Gold model</li>
+          <li>pytest suite covering boundary cases</li>
+        </ul>
+        <div class="tags"><span class="tag">PySpark</span><span class="tag">pytest</span><span class="tag">Medallion</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/projects/p3-synthea-medallion" href="#">Code ↗</a></div>
+      </article>
+
+      <!-- CS2 -->
+      <article class="card" data-roles="da ae de">
+        <div class="meta"><span>CS2 · Case study</span><span class="badge">Healthcare</span></div>
+        <h3>Surgical pipeline refactor</h3>
+        <p>Three notebooks repeated the same cleaning, and every run reloaded 6 years of history. I replaced them with a shared spine and a parallel DAG.</p>
+        <ul>
+          <li>Rebuilt a missing source view from dimensional tables</li>
+          <li>Case type derived from four rule flags</li>
+          <li>Full lookback on the first load only, incremental after</li>
+        </ul>
+        <div class="tags"><span class="tag">Caboodle</span><span class="tag">runMultiple</span><span class="tag">Incremental</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/case-studies/02-surgical-pipeline-refactor" href="#">Read case study ↗</a></div>
+      </article>
+
+      <!-- CS3 -->
+      <article class="card" data-roles="ae de">
+        <div class="meta"><span>CS3 · Case study</span><span class="badge">Migration</span></div>
+        <h3>Tableau Prep → PySpark migration</h3>
+        <p>I ported a 79-node Prep flow to Fabric, and found four bugs in the referral-to-appointment matching branch along the way.</p>
+        <ul>
+          <li>Node-by-node mapping and key-level reconciliation</li>
+          <li>Time-windowed, ranked matching done in the right order</li>
+        </ul>
+        <div class="tags"><span class="tag">Tableau Prep</span><span class="tag">PySpark</span><span class="tag">Window functions</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/case-studies/03-tableau-prep-migration" href="#">Read case study ↗</a></div>
+      </article>
+
+      <!-- CS4 -->
+      <article class="card" data-roles="pbi de">
+        <div class="meta"><span>CS4 · Case study</span><span class="badge">Performance</span></div>
+        <h3>Direct Lake capacity investigation</h3>
+        <p>A page load drove capacity to about 315% of base. I traced it to string keys, auto date tables and row-by-row DAX.</p>
+        <ul>
+          <li>Capacity Metrics and VertiPaq Analyzer diagnosis</li>
+          <li>BIGINT keys, auto date/time off, rules pushed to Silver</li>
+        </ul>
+        <div class="tags"><span class="tag">Direct Lake</span><span class="tag">DAX Studio</span><span class="tag">Capacity</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/case-studies/04-direct-lake-capacity" href="#">Read case study ↗</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Skills</h2><p>The tools I use every week, grouped by the job they do.</p></div></div>
+    <div class="skills">
+      <div class="skill"><h3>Power BI</h3><p>Star schemas, DAX time intelligence, calculation groups, field parameters, Direct Lake, Performance Analyzer, DAX Studio and VertiPaq Analyzer</p></div>
+      <div class="skill"><h3>Data engineering</h3><p>Microsoft Fabric (Lakehouse, notebooks, pipelines, variable libraries), PySpark, Delta Lake MERGE, incremental and SCD loads, orchestration</p></div>
+      <div class="skill"><h3>SQL &amp; Python</h3><p>T-SQL, Spark SQL, window functions, data-quality checks, pytest, openpyxl automation</p></div>
+      <div class="skill"><h3>Domain</h3><p>Healthcare operations: Epic Caboodle, contact center, surgical services, referrals. Also retail merchandising and sell-through.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head"><div><h2>Experience</h2></div></div>
+    <div class="timeline">
+      <div class="job"><div class="when">Jan 2024 – present</div><div><h3>Analytics Developer · <span class="org">Cooper University Hospital</span></h3><p>I build and maintain Fabric data pipelines from the Epic Caboodle warehouse and contact-center systems, and the Power BI semantic models and reports used by operations leaders.</p></div></div>
+      <div class="job"><div class="when">May 2024</div><div><h3>MS Business Analytics · <span class="org">Rutgers University</span></h3><p>4.0 GPA.</p></div></div>
+      <div class="job"><div class="when">Oct 2018 – Sep 2022</div><div><h3>Assistant Merchandising Manager · <span class="org">UNIQLO Vietnam</span></h3><p>[Add one line: e.g. the assortment, sell-through or inventory analysis you owned.]</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-top:0">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <h2>Let's talk.</h2>
+        <p>I'm open to Power BI Developer, Data Analyst, Analytics Engineer and Fabric Data Engineer roles.</p>
+        <p><code id="email-text">[your-email]</code></p>
+      </div>
+      <div class="cta">
+        <a class="btn primary" data-link="email" href="#">Email me</a>
+        <a class="btn" data-link="linkedin" href="#">LinkedIn ↗</a>
+        <a class="btn" data-link="repo" href="#">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">© <span id="yr"></span> Chloe · Built with plain HTML, hosted on GitHub Pages. All healthcare examples are anonymized; public projects use open or synthetic data.</div></footer>
+
+<script>
+  // ============ EDIT ME ============
+  const LINKS = {
+    repo: "https://github.com/<your-github-username>/analytics-portfolio",
+    linkedin: "https://www.linkedin.com/in/<your-handle>/",
+    email: "",                 // e.g. "you@example.com"
+    "demo-p1": "",             // Power BI "Publish to web" link, or a GIF/video URL
+    "demo-p2": ""
+  };
+  // =================================
+
+  document.querySelectorAll("[data-link]").forEach(a => {
+    const key = a.dataset.link;
+    let url = LINKS[key] || "";
+    if (key === "repo" && a.dataset.path && url) url += a.dataset.path;
+    if (key === "email" && url) url = "mailto:" + url;
+    const isPlaceholder = !url || url.includes("<your-");
+    if (isPlaceholder) {
+      // keep the layout but make the gap obvious until the link is set
+      a.removeAttribute("href");
+      a.classList.add("todo");
+      a.title = "Link not set yet: edit LINKS in index.html";
+      if (a.closest(".links")) a.textContent = a.textContent.replace(" ↗", "") + " (soon)";
+    } else {
+      a.href = url;
+      if (!url.startsWith("mailto:")) { a.target = "_blank"; a.rel = "noopener"; }
+    }
+  });
+  if (LINKS.email) document.getElementById("email-text").textContent = LINKS.email;
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  // role filter
+  const chips = document.querySelectorAll(".chip");
+  const cards = document.querySelectorAll("#cards .card");
+  chips.forEach(chip => chip.addEventListener("click", () => {
+    chips.forEach(c => c.setAttribute("aria-pressed", String(c === chip)));
+    const role = chip.dataset.role;
+    cards.forEach(card => {
+      const match = role === "all" || card.dataset.roles.split(" ").includes(role);
+      card.hidden = !match;
+    });
+  }));
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+// P2 · NYC 311 service performance - key measures
+// fact_service_request[CreatedDate] -> dim_date[Date] (dim_date marked as date table)
+
+Requests = COUNTROWS ( fact_service_request )
+
+Closed Requests = CALCULATE ( [Requests], fact_service_request[IsClosed] = TRUE () )
+
+Median Hours to Close = MEDIAN ( fact_service_request[HoursToClose] )
+
+Avg Hours to Close = AVERAGE ( fact_service_request[HoursToClose] )
+
+// SLA % only over requests with a valid close time (WithinSLA is blank otherwise).
+% Within SLA =
+DIVIDE (
+    CALCULATE ( [Requests], fact_service_request[WithinSLA] = TRUE () ),
+    CALCULATE ( [Requests], NOT ISBLANK ( fact_service_request[WithinSLA] ) )
+)
+
+% Within SLA PY = CALCULATE ( [% Within SLA], SAMEPERIODLASTYEAR ( dim_date[Date] ) )
+
+% Within SLA YoY pts =
+VAR _cur = [% Within SLA]
+VAR _py = [% Within SLA PY]
+RETURN IF ( NOT ISBLANK ( _cur ) && NOT ISBLANK ( _py ), _cur - _py )
+
+% After Hours =
+DIVIDE (
+    CALCULATE ( [Requests], fact_service_request[HourCategory] = "OutOfBusiness" ),
+    [Requests]
+)
+
+// Business-day-aware daily average (same logic as CS1).
+Avg Requests per Day =
+VAR _first = CALCULATE ( MIN ( fact_service_request[CreatedDate] ), REMOVEFILTERS ( fact_service_request[HourCategory] ) )
+VAR _last  = CALCULATE ( MAX ( fact_service_request[CreatedDate] ), REMOVEFILTERS ( fact_service_request[HourCategory] ) )
+VAR _businessOnly = SELECTEDVALUE ( fact_service_request[HourCategory] ) = "Business"
+VAR _days =
+    IF (
+        _businessOnly,
+        CALCULATE ( COUNTROWS ( dim_date ), DATESBETWEEN ( dim_date[Date], _first, _last ), dim_date[IsBusinessDay] = TRUE () ),
+        CALCULATE ( COUNTROWS ( dim_date ), DATESBETWEEN ( dim_date[Date], _first, _last ) )
+    )
+RETURN DIVIDE ( [Requests], _days )
+
+// Field parameters (Modeling > New parameter > Fields)
+Metric Selector = {
+    ( "Requests",              NAMEOF ( [Requests] ),              0 ),
+    ( "% Within SLA",          NAMEOF ( [% Within SLA] ),          1 ),
+    ( "Median Hours to Close", NAMEOF ( [Median Hours to Close] ), 2 ),
+    ( "Avg Requests per Day",  NAMEOF ( [Avg Requests per Day] ),  3 ),
+    ( "% After Hours",         NAMEOF ( [% After Hours] ),         4 )
+}
+
+Date Grain = {
+    ( "Week",    NAMEOF ( 'dim_date'[WeekStart] ),   0 ),
+    ( "Month",   NAMEOF ( 'dim_date'[MonthStart] ),  1 ),
+    ( "Quarter", NAMEOF ( 'dim_date'[YearQuarter] ), 2 ),
+    ( "Year",    NAMEOF ( 'dim_date'[Year] ),        3 )
+}

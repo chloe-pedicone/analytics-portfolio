@@ -1,0 +1,71 @@
+// ============================================================================
+// CS1 - Contact-center KPI model: representative DAX (renamed, generic tables)
+//   FactQueueInterval   one row per queue x 30-min interval (Silver)
+//   DimQueue            queue -> team, group, department
+//   DimDate             Date, IsBusinessDay, WeekStart, MonthStart, YearQuarter, Year
+//   FactQueueInterval[HourCategory] materialised in Silver (see hour_category.py)
+// ============================================================================
+
+// ---- Base measures ---------------------------------------------------------
+Calls Offered = SUM ( FactQueueInterval[CallsOffered] )
+
+Calls Answered Within 30s = SUM ( FactQueueInterval[CallsAnsweredWithin30s] )
+
+Service Level 30s =
+DIVIDE (
+    [Calls Answered Within 30s],
+    [Calls Offered] - SUM ( FactQueueInterval[CallsAbandonedWithin30s] )
+)
+
+// ---- Average per day, business-day aware -----------------------------------
+// When the HourCategory slicer = "Business", divide by business days only.
+// Otherwise a 24/7 team's weekend rows push the denominator to every calendar day.
+Avg Calls Offered per Day =
+VAR _firstDate = CALCULATE ( MIN ( FactQueueInterval[Date] ), REMOVEFILTERS ( FactQueueInterval[HourCategory] ) )
+VAR _lastDate  = CALCULATE ( MAX ( FactQueueInterval[Date] ), REMOVEFILTERS ( FactQueueInterval[HourCategory] ) )
+VAR _businessOnly = SELECTEDVALUE ( FactQueueInterval[HourCategory] ) = "Business"
+VAR _days =
+    IF (
+        _businessOnly,
+        CALCULATE ( COUNTROWS ( DimDate ), DATESBETWEEN ( DimDate[Date], _firstDate, _lastDate ), DimDate[IsBusinessDay] = TRUE () ),
+        CALCULATE ( COUNTROWS ( DimDate ), DATESBETWEEN ( DimDate[Date], _firstDate, _lastDate ) )
+    )
+RETURN
+    DIVIDE ( [Calls Offered], _days )
+
+// ---- Year-over-year --------------------------------------------------------
+// Because HourCategory is a column, the slicer filter flows into the prior
+// period unchanged - no need to re-implement the business-hours rule here.
+Service Level 30s PY =
+CALCULATE ( [Service Level 30s], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+
+Service Level 30s YoY pts =
+VAR _cur = [Service Level 30s]
+VAR _py  = [Service Level 30s PY]
+RETURN
+    IF ( NOT ISBLANK ( _cur ) && NOT ISBLANK ( _py ), _cur - _py )
+
+// ---- Field parameter: switch the KPI on one chart --------------------------
+// (Modeling > New parameter > Fields generates this table.)
+KPI Selector = {
+    ( "Calls Offered",         NAMEOF ( [Calls Offered] ),             0 ),
+    ( "Service Level 30s",     NAMEOF ( [Service Level 30s] ),         1 ),
+    ( "Avg Calls per Day",     NAMEOF ( [Avg Calls Offered per Day] ), 2 )
+}
+
+// ---- Field parameter: switch the date grain on the x-axis ------------------
+Date Grain = {
+    ( "Week",    NAMEOF ( 'DimDate'[WeekStart] ),   0 ),
+    ( "Month",   NAMEOF ( 'DimDate'[MonthStart] ),  1 ),
+    ( "Quarter", NAMEOF ( 'DimDate'[YearQuarter] ), 2 ),
+    ( "Year",    NAMEOF ( 'DimDate'[Year] ),        3 )
+}
+
+// ---- Calculation group "Period" (create in Tabular Editor / model view) ----
+// Item "MTD":        CALCULATE ( SELECTEDMEASURE (), DATESMTD ( DimDate[Date] ) )
+// Item "QTD":        CALCULATE ( SELECTEDMEASURE (), DATESQTD ( DimDate[Date] ) )
+// Item "YTD":        CALCULATE ( SELECTEDMEASURE (), DATESYTD ( DimDate[Date] ) )
+// Item "Last Month": CALCULATE ( SELECTEDMEASURE (), PREVIOUSMONTH ( DimDate[Date] ) )
+// Note: period items that shift dates conflict with a date-grain axis
+// (each axis bucket gets shifted). Use the Period group on cards and the
+// Date Grain parameter on trend charts, or keep both off the same visual.

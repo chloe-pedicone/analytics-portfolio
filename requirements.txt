@@ -1,0 +1,5 @@
+pyspark==3.5.3
+delta-spark==3.2.1
+requests>=2.31
+holidays>=0.50
+pytest>=8.0

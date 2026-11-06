@@ -1,0 +1,19 @@
+// P3 · Synthea Gold model - key measures
+
+Encounters = COUNTROWS ( fact_encounter )
+
+Inpatient Stays = CALCULATE ( [Encounters], fact_encounter[IsInpatient] = TRUE () )
+
+// Denominator: inpatient stays that ended (a stay with no discharge can't be an index).
+Index Stays =
+CALCULATE ( [Encounters], fact_encounter[IsInpatient] = TRUE (), NOT ISBLANK ( fact_encounter[LengthOfStayDays] ) )
+
+30-Day Readmission Rate =
+DIVIDE ( CALCULATE ( [Encounters], fact_encounter[IsReadmitIndex] = TRUE () ), [Index Stays] )
+
+Avg Length of Stay (days) =
+CALCULATE ( AVERAGE ( fact_encounter[LengthOfStayDays] ), fact_encounter[IsInpatient] = TRUE () )
+
+Avg Cost per Encounter = DIVIDE ( SUM ( fact_encounter[TotalClaimCost] ), [Encounters] )
+
+Payer Coverage % = DIVIDE ( SUM ( fact_encounter[PayerCoverage] ), SUM ( fact_encounter[TotalClaimCost] ) )
