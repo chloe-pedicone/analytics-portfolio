@@ -178,6 +178,21 @@
     </div>
 
     <div class="grid" id="cards">
+      
+      <!-- P3 -->
+      <article class="card" data-roles="ae de">
+        <div class="meta"><span>P1 · Synthetic data</span><span class="badge">Tested</span></div>
+        <h3>Synthetic patient medallion lakehouse</h3>
+        <p>A Bronze → Silver → Gold build on Synthea patients, with a data-quality gate and unit-tested 30-day readmission logic.</p>
+        <ul>
+          <li>Window-function readmission flags, with overlap handling</li>
+          <li>SCD1 patient dimension, integer-keyed Gold model</li>
+          <li>pytest suite covering boundary cases</li>
+        </ul>
+        <div class="tags"><span class="tag">PySpark</span><span class="tag">pytest</span><span class="tag">Medallion</span></div>
+        <div class="links"><a data-link="repo" data-path="/tree/main/projects/p3-synthea-medallion" href="#">Code ↗</a></div>
+      </article>
+      
       <!-- P2 -->
       <article class="card" data-roles="pbi da ae de">
         <div class="meta"><span>P2 · Public data</span><span class="badge live">Live demo</span></div>
@@ -204,20 +219,6 @@
         </ul>
         <div class="tags"><span class="tag">Fabric</span><span class="tag">PySpark</span><span class="tag">Calc groups</span></div>
         <div class="links"><a data-link="repo" data-path="/tree/main/case-studies/01-contact-center-kpi-model" href="#">Read case study ↗</a></div>
-      </article>
-
-      <!-- P3 -->
-      <article class="card" data-roles="ae de">
-        <div class="meta"><span>P1 · Synthetic data</span><span class="badge">Tested</span></div>
-        <h3>Synthetic patient medallion lakehouse</h3>
-        <p>A Bronze → Silver → Gold build on Synthea patients, with a data-quality gate and unit-tested 30-day readmission logic.</p>
-        <ul>
-          <li>Window-function readmission flags, with overlap handling</li>
-          <li>SCD1 patient dimension, integer-keyed Gold model</li>
-          <li>pytest suite covering boundary cases</li>
-        </ul>
-        <div class="tags"><span class="tag">PySpark</span><span class="tag">pytest</span><span class="tag">Medallion</span></div>
-        <div class="links"><a data-link="repo" data-path="/tree/main/projects/p3-synthea-medallion" href="#">Code ↗</a></div>
       </article>
 
       <!-- CS2 -->
