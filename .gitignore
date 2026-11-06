@@ -23,3 +23,5 @@ data/
 
 # power bi temp
 *.pbix.bak
+pbi_export/
+pbi_export.zip
