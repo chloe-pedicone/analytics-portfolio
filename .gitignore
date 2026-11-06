@@ -1,0 +1,25 @@
+# secrets / sensitive
+.sensitive-terms.txt
+.env
+*.env
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# spark / delta local output
+spark-warehouse/
+metastore_db/
+derby.log
+*.crc
+
+# data (download it, don't commit it)
+data/
+*.csv
+!docs/assets/*.csv
+
+# power bi temp
+*.pbix.bak
