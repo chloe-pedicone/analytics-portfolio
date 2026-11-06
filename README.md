@@ -1,10 +1,10 @@
-# Analytics Portfolio · Chloe [Last Name]
+# Analytics Portfolio · Chloe Pedicone
 
 **Power BI Developer · Data Analyst · Analytics Engineer · Microsoft Fabric**
 
 I build end-to-end analytics on Microsoft Fabric: incremental PySpark/Delta pipelines from a healthcare data warehouse up to fast, trusted Power BI models. Before analytics engineering I spent four years in retail merchandising, so I start from the business question.
 
-🌐 **Website:** [chloe-pedicone.github.io/analytics-portfolio](https://chloe-pedicone.github.io/analytics-portfolio/) · 💼 **LinkedIn:** `[link]` · ✉️ `[email]`
+🌐 **Website:** [chloe-pedicone.github.io/analytics-portfolio](https://chloe-pedicone.github.io/analytics-portfolio/) · 💼 **LinkedIn:** [linkedin.com/in/lethduong971229](https://www.linkedin.com/in/lethduong971229/) · ✉️ chloepedicone@gmail.com
 
 ---
 
