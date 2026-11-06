@@ -3,15 +3,19 @@
 import os
 import sys
 from datetime import date
+from pathlib import Path
 
-from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
-sys.path.append("../../../shared")
-from fabric_utils import load_incremental  # noqa: E402
+try:  # local run: make <repo>/shared importable no matter which folder you run from
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "shared"))
+except NameError:  # Fabric notebook has no __file__: upload fabric_utils as a library/resource
+    pass
+from fabric_utils import get_spark, load_incremental  # noqa: E402
 
-spark = SparkSession.builder.getOrCreate()
 SCHEMA = os.getenv("P2_SCHEMA", "nyc311")
+spark = get_spark("p2-silver", schemas=[SCHEMA])
 
 # Business hours for 311 agencies (public replay of the CS1 rule): Mon-Fri 08:00-18:00, excl. holidays.
 BUSINESS_START, BUSINESS_END = 8, 18      # end exclusive
@@ -42,6 +46,12 @@ def build_date_dim(start: date, end: date) -> DataFrame:
     )
 
 
+def _label(col, unknown: str = "UNSPECIFIED"):
+    """Trimmed text; NULL or blank -> `unknown` (keeps the row through Gold's dimension joins)."""
+    t = F.trim(col)
+    return F.when(t.isNull() | (t == ""), F.lit(unknown)).otherwise(t)
+
+
 def to_silver(bronze: DataFrame, date_dim: DataFrame) -> DataFrame:
     sla_map = F.create_map(*[x for k, v in SLA_HOURS_BY_COMPLAINT.items() for x in (F.lit(k), F.lit(v))])
 
@@ -52,9 +62,10 @@ def to_silver(bronze: DataFrame, date_dim: DataFrame) -> DataFrame:
         .withColumn("ClosedAt", F.to_timestamp("closed_date"))
         .withColumn("CreatedDate", F.to_date("CreatedAt"))
         .withColumn("CreatedHour", F.hour("CreatedAt"))
-        .withColumn("Agency", F.upper(F.trim("agency")))
-        .withColumn("ComplaintType", F.trim("complaint_type"))
-        .withColumn("Borough", F.coalesce(F.upper(F.trim("borough")), F.lit("UNSPECIFIED")))
+        # Gold joins dims on these three columns, so a NULL/blank here would silently drop the row.
+        .withColumn("Agency", _label(F.upper(F.col("agency"))))
+        .withColumn("ComplaintType", _label(F.col("complaint_type")))
+        .withColumn("Borough", _label(F.upper(F.col("borough"))))
         .withColumn("Status", F.trim("status"))
         .filter(F.col("UniqueKey").isNotNull() & F.col("CreatedAt").isNotNull())
     )

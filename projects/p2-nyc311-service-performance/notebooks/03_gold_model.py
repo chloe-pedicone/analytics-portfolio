@@ -2,12 +2,21 @@
 #   FactServiceRequest -> DimAgency, DimComplaintType, DimBorough, dim_date
 
 import os
+import sys
+from pathlib import Path
 
-from pyspark.sql import SparkSession, Window
+try:  # local run: make <repo>/shared importable no matter which folder you run from
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "shared"))
+except NameError:  # Fabric notebook has no __file__: upload fabric_utils as a library/resource
+    pass
+
+from pyspark.sql import Window
 from pyspark.sql import functions as F
 
-spark = SparkSession.builder.getOrCreate()
+from fabric_utils import get_spark  # noqa: E402
+
 SCHEMA = os.getenv("P2_SCHEMA", "nyc311")
+spark = get_spark("p2-gold", schemas=[SCHEMA])
 
 silver = spark.table(f"{SCHEMA}.silver_service_requests")
 

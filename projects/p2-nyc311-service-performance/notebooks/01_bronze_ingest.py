@@ -8,17 +8,20 @@
 import os
 import sys
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import requests
-from pyspark.sql import SparkSession, types as T
+from pyspark.sql import types as T
 
-sys.path.append("../../../shared")  # repo-relative; in Fabric upload fabric_utils as a library/resource
-from fabric_utils import load_incremental, table_exists  # noqa: E402
-
-spark = SparkSession.builder.getOrCreate()
+try:  # local run: make <repo>/shared importable no matter which folder you run from
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "shared"))
+except NameError:  # Fabric notebook has no __file__: upload fabric_utils as a library/resource
+    pass
+from fabric_utils import get_spark, load_incremental, table_exists  # noqa: E402
 
 # ---- config ---------------------------------------------------------------
 SCHEMA = os.getenv("P2_SCHEMA", "nyc311")          # Fabric: "<lakehouse>.<schema>" if schemas enabled
+spark = get_spark("p2-bronze", schemas=[SCHEMA])   # Fabric: reuses the notebook session
 BRONZE_TABLE = f"{SCHEMA}.bronze_service_requests"
 ENDPOINT = "https://data.cityofnewyork.us/resource/erm2-nwe9.json"
 INITIAL_START = os.getenv("P2_INITIAL_START", "2026-10-25T00:00:00")  # small test window; widen later
