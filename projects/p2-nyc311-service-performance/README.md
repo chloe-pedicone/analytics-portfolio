@@ -6,6 +6,8 @@
 
 **Live report:** `[link]` · **Demo GIF:** `[docs/assets/p2.gif]`
 
+![SLA Performance page: KPI cards, open requests past SLA by agency, complaint-type table](../../docs/assets/p2-sla-performance.png)
+
 ## Why this project
 It's the public twin of my contact-center work ([CS1](../../case-studies/01-contact-center-kpi-model/)): the same incremental loads, business-hours classification and SLA metrics, all on open data.
 
