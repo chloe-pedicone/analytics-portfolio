@@ -4,7 +4,7 @@
 
 I build end-to-end analytics on Microsoft Fabric: incremental PySpark/Delta pipelines from a healthcare data warehouse up to fast, trusted Power BI models. Before analytics engineering I spent four years in retail merchandising, so I start from the business question.
 
-🌐 **Website:** [chloepedicone97.github.io/analytics-portfolio](https://chloepedicone97.github.io/analytics-portfolio/) · 💼 **LinkedIn:** `[link]` · ✉️ `[email]`
+🌐 **Website:** [chloe-pedicone.github.io/analytics-portfolio](https://chloe-pedicone.github.io/analytics-portfolio/) · 💼 **LinkedIn:** `[link]` · ✉️ `[email]`
 
 ---
 
