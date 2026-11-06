@@ -9,18 +9,40 @@ Median Hours to Close = MEDIAN ( fact_service_request[HoursToClose] )
 
 Avg Hours to Close = AVERAGE ( fact_service_request[HoursToClose] )
 
-// SLA % only over requests with a valid close time (WithinSLA is blank otherwise).
-% Within SLA =
+Open Requests = CALCULATE ( [Requests], fact_service_request[IsClosed] = FALSE () )
+
+// Open requests already past their SLA (definite misses).
+// "As of" = the latest created hour in the data, not today's clock (timestamps are NYC wall-clock).
+// Age uses the END of the created hour, so it never overstates age.
+Open Past SLA =
+VAR _asOf =
+    MAXX (
+        ALL ( fact_service_request ),
+        fact_service_request[CreatedDate] + fact_service_request[CreatedHour] / 24
+    )
+RETURN
+    COUNTROWS (
+        FILTER (
+            fact_service_request,
+            fact_service_request[IsClosed] = FALSE ()
+                && ( _asOf - ( fact_service_request[CreatedDate] + ( fact_service_request[CreatedHour] + 1 ) / 24 ) ) * 24
+                    > fact_service_request[SlaHours]
+        )
+    )
+
+// SLA % over CLOSED requests with a valid close time only (WithinSLA is blank otherwise).
+// Open requests are excluded here; see [Open Past SLA] for those already missed.
+% Closed Within SLA =
 DIVIDE (
     CALCULATE ( [Requests], fact_service_request[WithinSLA] = TRUE () ),
     CALCULATE ( [Requests], NOT ISBLANK ( fact_service_request[WithinSLA] ) )
 )
 
-% Within SLA PY = CALCULATE ( [% Within SLA], SAMEPERIODLASTYEAR ( dim_date[Date] ) )
+% Closed Within SLA PY = CALCULATE ( [% Closed Within SLA], SAMEPERIODLASTYEAR ( dim_date[Date] ) )
 
-% Within SLA YoY pts =
-VAR _cur = [% Within SLA]
-VAR _py = [% Within SLA PY]
+% Closed Within SLA YoY pts =
+VAR _cur = [% Closed Within SLA]
+VAR _py = [% Closed Within SLA PY]
 RETURN IF ( NOT ISBLANK ( _cur ) && NOT ISBLANK ( _py ), _cur - _py )
 
 % After Hours =
@@ -45,7 +67,7 @@ RETURN DIVIDE ( [Requests], _days )
 // Field parameters (Modeling > New parameter > Fields)
 Metric Selector = {
     ( "Requests",              NAMEOF ( [Requests] ),              0 ),
-    ( "% Within SLA",          NAMEOF ( [% Within SLA] ),          1 ),
+    ( "% Closed Within SLA",   NAMEOF ( [% Closed Within SLA] ),   1 ),
     ( "Median Hours to Close", NAMEOF ( [Median Hours to Close] ), 2 ),
     ( "Avg Requests per Day",  NAMEOF ( [Avg Requests per Day] ),  3 ),
     ( "% After Hours",         NAMEOF ( [% After Hours] ),         4 )
