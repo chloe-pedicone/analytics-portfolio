@@ -1,4 +1,4 @@
-# P3 · Synthetic patient medallion lakehouse (Synthea)
+# P1 · Synthetic patient medallion lakehouse (Synthea)
 
 **Roles:** Analytics Engineer · Fabric / Data Engineer
 **Stack:** PySpark · Delta · Microsoft Fabric (or local Spark) · pytest · Power BI

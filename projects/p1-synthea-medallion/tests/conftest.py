@@ -1,4 +1,4 @@
-"""Import path for P3 source modules.
+"""Import path for P1 source modules.
 
 The Spark session (`spark` fixture) lives in the repo-root conftest.py.
 """

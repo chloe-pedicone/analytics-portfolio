@@ -1,4 +1,4 @@
-# P3 · Silver: typed, de-duplicated, validated. Patient dim loaded as SCD Type 1.
+# P1 · Silver: typed, de-duplicated, validated. Patient dim loaded as SCD Type 1.
 
 import os
 import sys
@@ -10,7 +10,7 @@ sys.path.append("../../../shared")
 from fabric_utils import load_scd1  # noqa: E402
 
 spark = SparkSession.builder.getOrCreate()
-SCHEMA = os.getenv("P3_SCHEMA", "synthea")
+SCHEMA = os.getenv("P1_SCHEMA", "synthea")
 
 
 def bronze(t):

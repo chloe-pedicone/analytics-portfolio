@@ -12,8 +12,7 @@ I build end-to-end analytics on Microsoft Fabric: incremental PySpark/Delta pipe
 | Project | What it shows | Stack |
 |---|---|---|
 | [P2 · NYC 311 service performance](projects/p2-nyc311-service-performance/) | Incremental API ingestion, hash-keyed star schema, SLA KPIs that also count open requests already past target, Power BI project in Git | PySpark · Delta · Power BI (PBIP) |
-| [P1 · Hospital readmissions benchmarking](projects/p1-cms-readmissions/) | SQL cleaning, star schema, ranking and percentile DAX on CMS data | T-SQL · Power BI |
-| [P3 · Synthetic patient medallion lakehouse](projects/p3-synthea-medallion/) | Bronze/Silver/Gold, data-quality gate, unit-tested 30-day readmission logic | PySpark · pytest · Power BI |
+| [P1 · Synthetic patient medallion lakehouse](projects/p1-synthea-medallion/) | Bronze/Silver/Gold, data-quality gate, unit-tested 30-day readmission logic | PySpark · pytest · Power BI |
 
 ## Case studies from my work (anonymized)
 | Case study | Problem → outcome |
@@ -35,7 +34,7 @@ Python, R, SQL and machine-learning projects, including a hospital call-center p
 
 ## Reusable code
 - [`shared/fabric_utils`](shared/fabric_utils/): watermark + lookback Delta MERGE, hash-based SCD1 loads, a `runMultiple` DAG builder with cycle checks
-- [`tests/`](tests/): pytest suite (`python -m pytest -q tests projects/p3-synthea-medallion/tests`)
+- [`tests/`](tests/): pytest suite (`python -m pytest -q tests projects/p1-synthea-medallion/tests`)
 
 ## Skills
 **Power BI:** star schema, DAX (time intelligence, calculation groups, field parameters), Direct Lake, Performance Analyzer, DAX Studio / VertiPaq Analyzer

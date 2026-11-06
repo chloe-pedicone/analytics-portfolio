@@ -1,4 +1,4 @@
-# P3 · Bronze: land Synthea CSV exports as Delta tables, untouched (all strings).
+# P1 · Bronze: land Synthea CSV exports as Delta tables, untouched (all strings).
 #
 # Generate data (Java 17+):
 #   git clone https://github.com/synthetichealth/synthea && cd synthea
@@ -12,7 +12,7 @@ from pyspark.sql import functions as F
 
 spark = SparkSession.builder.getOrCreate()
 RAW_DIR = os.getenv("SYNTHEA_RAW_DIR", "Files/synthea")
-SCHEMA = os.getenv("P3_SCHEMA", "synthea")
+SCHEMA = os.getenv("P1_SCHEMA", "synthea")
 TABLES = ["patients", "encounters", "conditions", "procedures", "payers", "providers", "organizations"]
 
 for t in TABLES:

@@ -1,4 +1,4 @@
-// P3 · Synthea Gold model - key measures
+// P1 · Synthea Gold model - key measures
 
 Encounters = COUNTROWS ( fact_encounter )
 

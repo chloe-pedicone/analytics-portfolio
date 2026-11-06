@@ -1,4 +1,4 @@
-# P3 · Gold: FactEncounter with readmission + LOS flags, conformed dims, date dim.
+# P1 · Gold: FactEncounter with readmission + LOS flags, conformed dims, date dim.
 
 import os
 import sys
@@ -10,7 +10,7 @@ sys.path.append("../src")
 from readmission import flag_readmissions, length_of_stay_days  # noqa: E402
 
 spark = SparkSession.builder.getOrCreate()
-SCHEMA = os.getenv("P3_SCHEMA", "synthea")
+SCHEMA = os.getenv("P1_SCHEMA", "synthea")
 
 enc = spark.table(f"{SCHEMA}.silver_encounters")
 
