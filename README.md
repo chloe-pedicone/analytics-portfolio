@@ -11,7 +11,7 @@ I build end-to-end analytics on Microsoft Fabric: incremental PySpark/Delta pipe
 ## Public-data projects (live demos)
 | Project | What it shows | Stack |
 |---|---|---|
-| [P2 · NYC 311 service performance](projects/p2-nyc311-service-performance/) | Incremental API ingestion, business-hours classification, SLA and YoY KPIs, field parameters | PySpark · Delta · Power BI |
+| [P2 · NYC 311 service performance](projects/p2-nyc311-service-performance/) | Incremental API ingestion, hash-keyed star schema, SLA KPIs that also count open requests already past target, Power BI project in Git | PySpark · Delta · Power BI (PBIP) |
 | [P1 · Hospital readmissions benchmarking](projects/p1-cms-readmissions/) | SQL cleaning, star schema, ranking and percentile DAX on CMS data | T-SQL · Power BI |
 | [P3 · Synthetic patient medallion lakehouse](projects/p3-synthea-medallion/) | Bronze/Silver/Gold, data-quality gate, unit-tested 30-day readmission logic | PySpark · pytest · Power BI |
 

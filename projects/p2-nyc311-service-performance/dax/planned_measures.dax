@@ -1,43 +1,10 @@
-// P2 · NYC 311 service performance - key measures
+// P2 · NYC 311 - PLANNED measures, not yet in the Power BI model.
+// The measures that ARE in the model live in the Power BI project (source of truth):
+//   ../powerbi/PBI_NYC311.SemanticModel/definition/tables/_Measure.tmdl
+// Move a measure from here into the model once its page is built, then delete it here.
 // fact_service_request[CreatedDate] -> dim_date[Date] (dim_date marked as date table)
 
-Requests = COUNTROWS ( fact_service_request )
-
-Closed Requests = CALCULATE ( [Requests], fact_service_request[IsClosed] = TRUE () )
-
-Median Hours to Close = MEDIAN ( fact_service_request[HoursToClose] )
-
-Avg Hours to Close = AVERAGE ( fact_service_request[HoursToClose] )
-
-Open Requests = CALCULATE ( [Requests], fact_service_request[IsClosed] = FALSE () )
-
-// Open requests already past their SLA (definite misses).
-// "As of" = the latest created hour in the data, not today's clock (timestamps are NYC wall-clock).
-// Age uses the END of the created hour, so it never overstates age.
-Open Past SLA =
-VAR _asOf =
-    MAXX (
-        ALL ( fact_service_request ),
-        fact_service_request[CreatedDate] + fact_service_request[CreatedHour] / 24
-    )
-RETURN
-    COUNTROWS (
-        FILTER (
-            fact_service_request,
-            fact_service_request[IsClosed] = FALSE ()
-                && ( _asOf - ( fact_service_request[CreatedDate] + ( fact_service_request[CreatedHour] + 1 ) / 24 ) ) * 24
-                    > fact_service_request[SlaHours]
-        )
-    )
-
-// SLA % over CLOSED requests with a valid close time only (WithinSLA is blank otherwise).
-// Open requests are excluded here; see [Open Past SLA] for those already missed.
-% Closed Within SLA =
-DIVIDE (
-    CALCULATE ( [Requests], fact_service_request[WithinSLA] = TRUE () ),
-    CALCULATE ( [Requests], NOT ISBLANK ( fact_service_request[WithinSLA] ) )
-)
-
+// Needs at least 2 years of data (after the backfill) to return anything.
 % Closed Within SLA PY = CALCULATE ( [% Closed Within SLA], SAMEPERIODLASTYEAR ( dim_date[Date] ) )
 
 % Closed Within SLA YoY pts =
@@ -79,3 +46,6 @@ Date Grain = {
     ( "Quarter", NAMEOF ( 'dim_date'[YearQuarter] ), 2 ),
     ( "Year",    NAMEOF ( 'dim_date'[Year] ),        3 )
 }
+
+// Mean is pulled up by a few very slow closures; the report uses the median. Closed requests only.
+Avg Hours to Close = AVERAGE ( fact_service_request[HoursToClose] )
