@@ -1,0 +1,87 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 86
+          },
+          "nodeIndex": "dim_agency",
+          "nodeLineageTag": "54dbea71-97e0-48a1-b078-2549d29a290f",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 82,
+            "y": 287
+          },
+          "nodeIndex": "dim_borough",
+          "nodeLineageTag": "c0da83cc-70ef-40b3-81c3-b1a4cd77a1a0",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 431,
+            "y": 417
+          },
+          "nodeIndex": "dim_complaint_type",
+          "nodeLineageTag": "fa3deb68-060b-42c0-a0cc-3c549a836664",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 910,
+            "y": 279
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "866a8e98-e254-459b-9d51-d74551cca2de",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 492,
+            "y": 0
+          },
+          "nodeIndex": "fact_service_request",
+          "nodeLineageTag": "202fce84-2be0-4eb5-adbb-75125ef4dc86",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

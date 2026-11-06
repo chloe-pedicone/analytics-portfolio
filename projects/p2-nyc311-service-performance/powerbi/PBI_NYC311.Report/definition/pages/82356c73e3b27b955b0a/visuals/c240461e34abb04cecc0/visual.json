@@ -1,0 +1,64 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "c240461e34abb04cecc0",
+  "position": {
+    "x": 24,
+    "y": 1008,
+    "z": 11000,
+    "width": 1872,
+    "height": 60,
+    "tabOrder": 11000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Source: NYC Open Data, 311 Service Requests. SLA targets are illustrative, not official: Noise - Residential 12h, Illegal Parking 24h, HEAT/HOT WATER 72h, all other types 120h. \"Closed within SLA\" counts closed requests only. \"Open past SLA\" counts open requests already older than their target, measured to the hour and never overstated.",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "color": "#605E5C"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

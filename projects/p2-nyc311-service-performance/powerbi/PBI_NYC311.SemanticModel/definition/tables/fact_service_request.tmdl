@@ -1,0 +1,122 @@
+table fact_service_request
+	lineageTag: 202fce84-2be0-4eb5-adbb-75125ef4dc86
+
+	column UniqueKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 58dd1188-f491-4f85-a9fc-55ab75d89ef6
+		summarizeBy: count
+		sourceColumn: UniqueKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c20b2626-6aef-48c1-b72e-8771d72c6d5f
+		summarizeBy: none
+		sourceColumn: CreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CreatedHour
+		dataType: int64
+		formatString: 0
+		lineageTag: bd2015cd-3c87-4cd9-8e70-f445ea230442
+		summarizeBy: sum
+		sourceColumn: CreatedHour
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgencyKey
+		dataType: int64
+		formatString: 0
+		lineageTag: fb66fa12-253f-477e-ad46-ef0c3fc12504
+		summarizeBy: none
+		sourceColumn: AgencyKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ComplaintTypeKey
+		dataType: int64
+		formatString: 0
+		lineageTag: c2712c65-7b91-4080-a3da-0239b422cc33
+		summarizeBy: none
+		sourceColumn: ComplaintTypeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column BoroughKey
+		dataType: int64
+		formatString: 0
+		lineageTag: f61684ef-ac80-4d1e-b284-c3412d703026
+		summarizeBy: none
+		sourceColumn: BoroughKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 963fb16c-5ce8-4786-aa9c-2b10bec0a0f9
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column HoursToClose
+		dataType: double
+		lineageTag: d05e2b7a-4a79-495b-bfb9-228713909d52
+		summarizeBy: sum
+		sourceColumn: HoursToClose
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SlaHours
+		dataType: int64
+		formatString: 0
+		lineageTag: 350997ea-ba6e-4994-bb77-38a74dbb77c8
+		summarizeBy: sum
+		sourceColumn: SlaHours
+
+		annotation SummarizationSetBy = Automatic
+
+	column WithinSLA
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6366a37e-135c-4079-8496-ca12f781db96
+		summarizeBy: none
+		sourceColumn: WithinSLA
+
+		annotation SummarizationSetBy = Automatic
+
+	column HourCategory
+		dataType: string
+		lineageTag: 0e227a16-0a3f-4a88-926b-a079475551bf
+		summarizeBy: none
+		sourceColumn: HourCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsClosed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 536fd921-d9be-4c83-b920-93686bf4b94a
+		summarizeBy: none
+		sourceColumn: IsClosed
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_service_request = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "fact_service_request.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

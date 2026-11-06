@@ -1,0 +1,30 @@
+table dim_agency
+	lineageTag: 54dbea71-97e0-48a1-b078-2549d29a290f
+
+	column Agency
+		dataType: string
+		lineageTag: 080b11b5-1d1d-4f22-a79f-1908f89b1177
+		summarizeBy: none
+		sourceColumn: Agency
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgencyKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 968bfc59-2bf2-4d71-9e22-8c2672c77fa4
+		summarizeBy: none
+		sourceColumn: AgencyKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_agency = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DataFolder & "dim_agency.parquet"), [Compression=null, LegacyColumnNameEncoding=false, MaxDepth=null])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

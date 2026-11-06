@@ -1,0 +1,115 @@
+table _Measure
+	lineageTag: 9e73e724-5863-4ae6-9f5d-97011775a12b
+
+	measure Requests = COUNTROWS ( fact_service_request )
+		formatString: #,0
+		lineageTag: ba968010-4efd-482e-abf5-33c40de3636a
+
+	measure 'Closed Requests' =
+			
+			IF ( NOT ISBLANK ( [Requests] ), CALCULATE ( [Requests], fact_service_request[IsClosed] = TRUE () ) + 0 )
+		formatString: #,0
+		lineageTag: 17cff886-4580-4e7e-888d-88d0b72f5eca
+
+	measure 'Median Hours to Close' = MEDIAN ( fact_service_request[HoursToClose] )
+		formatString: #,0.0
+		lineageTag: 05815ed3-ac8b-4d46-82c1-9397b07f76cc
+
+	measure '% Closed Within SLA' =
+			
+			DIVIDE (
+			    CALCULATE ( [Requests], fact_service_request[WithinSLA] = TRUE () ),
+			    CALCULATE ( [Requests], NOT ISBLANK ( fact_service_request[WithinSLA] ) )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: eff38d6a-940f-44ae-b2e8-ac98b108b2d1
+
+	measure 'Open Requests' =
+			
+			IF ( NOT ISBLANK ( [Requests] ), CALCULATE ( [Requests], fact_service_request[IsClosed] = FALSE () ) + 0 )
+		formatString: #,0
+		lineageTag: 3a62fd00-5f26-4719-8624-9c8107bec8e8
+
+	measure 'Open Past SLA' =
+			
+			// "As of" = the latest created hour in the data, not today's clock (timestamps are NYC wall-clock).
+			// Age uses the END of the created hour, so it never overstates age -> only counts definite misses.
+			VAR _asOf =
+			    MAXX (
+			        ALL ( fact_service_request ),
+			        fact_service_request[CreatedDate] + fact_service_request[CreatedHour] / 24
+			    )
+			RETURN
+			    IF (
+			        NOT ISBLANK ( [Requests] ),
+			        COUNTROWS (
+			            FILTER (
+			                fact_service_request,
+			                fact_service_request[IsClosed] = FALSE ()
+			                    && ( _asOf - ( fact_service_request[CreatedDate] + ( fact_service_request[CreatedHour] + 1 ) / 24 ) ) * 24
+			                        > fact_service_request[SlaHours]
+			            )
+			        ) + 0
+			    )
+		formatString: #,0
+		lineageTag: f20bb80e-4d4e-4803-8751-04cbe00056be
+
+	measure '% Open' = DIVIDE ( [Open Requests], [Requests] )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 1124c13e-594c-42a0-b429-081ebaf2eaec
+
+	measure 'SLA Target Hours' = SELECTEDVALUE ( fact_service_request[SlaHours] )
+		formatString: 0
+		lineageTag: 4dc73bb3-d928-46d0-81ec-74e096f2c36f
+
+	measure 'Data Window' =
+			
+			VAR _first = MIN ( fact_service_request[CreatedDate] )
+			VAR _last = MAX ( fact_service_request[CreatedDate] )
+			VAR _asOf = MAXX ( ALL ( fact_service_request ), fact_service_request[CreatedDate] + fact_service_request[CreatedHour] / 24 )
+			RETURN
+			    "Requests created " & FORMAT ( _first, "d mmm" ) & " " & UNICHAR ( 8211 ) & " " & FORMAT ( _last, "d mmm yyyy" )
+			        & "   " & UNICHAR ( 183 ) & "   Latest hour loaded: " & FORMAT ( _asOf, "d mmm yyyy, hh:mm" )
+		displayFolder: Labels
+		lineageTag: 02916542-66d0-4827-8eea-b13b70598c3b
+
+	measure 'Sub Requests' =
+			
+			FORMAT ( [Open Requests], "#,0" ) & " still open (" & FORMAT ( [% Open], "0%" ) & ")"
+		displayFolder: Labels
+		lineageTag: be5fcfc3-75f5-4293-9ae2-f6f11a7ec8af
+
+	measure 'Sub Closed Within SLA' =
+			
+			"of " & FORMAT ( [Closed Requests], "#,0" ) & " closed requests"
+		displayFolder: Labels
+		lineageTag: d5f2828f-2c72-49b5-a643-15b658ad1544
+
+	measure 'Sub Open Past SLA' =
+			
+			"of " & FORMAT ( [Open Requests], "#,0" ) & " open requests " & UNICHAR ( 183 ) & " definite misses"
+		displayFolder: Labels
+		lineageTag: 65048bb4-09a0-4890-a65f-ff3c8fbeadc9
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 743c13bb-fc01-42c1-ada4-0db51985dba1
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measure = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

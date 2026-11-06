@@ -25,3 +25,7 @@ data/
 *.pbix.bak
 pbi_export/
 pbi_export.zip
+
+# Power BI project: local-only files
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

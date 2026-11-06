@@ -1,0 +1,16 @@
+relationship AutoDetected_2fa2ed1f-7577-4c2c-8ddc-5e6b87b37b8b
+	fromColumn: fact_service_request.AgencyKey
+	toColumn: dim_agency.AgencyKey
+
+relationship AutoDetected_cac0894a-50b7-40e3-8c3d-77a3cccc9b7a
+	fromColumn: fact_service_request.BoroughKey
+	toColumn: dim_borough.BoroughKey
+
+relationship AutoDetected_50b0d347-8dc0-425a-8ac2-321d973526cd
+	fromColumn: fact_service_request.ComplaintTypeKey
+	toColumn: dim_complaint_type.ComplaintTypeKey
+
+relationship e87e0ac9-e718-f001-5848-d5e43db8e878
+	fromColumn: fact_service_request.CreatedDate
+	toColumn: dim_date.Date
+
