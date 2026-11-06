@@ -7,6 +7,7 @@
 
 import os
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -49,8 +50,37 @@ def start_from() -> str:
     return ts.strftime("%Y-%m-%dT%H:%M:%S")
 
 
+RETRY_STATUS = {429, 500, 502, 503, 504}   # throttled or temporary server errors
+MAX_ATTEMPTS = 6
+
+
+def get_page(params: dict, headers: dict) -> list:
+    """GET one page; on throttling/temporary errors wait and retry instead of crashing."""
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            resp = requests.get(ENDPOINT, params=params, headers=headers, timeout=120)
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            resp, reason = None, type(exc).__name__
+        else:
+            if resp.status_code not in RETRY_STATUS:
+                resp.raise_for_status()          # other 4xx (bad query, bad token): fail fast
+                return resp.json()
+            reason = f"HTTP {resp.status_code}"
+        if attempt == MAX_ATTEMPTS:
+            if resp is not None:
+                resp.raise_for_status()
+            raise RuntimeError(f"API still failing after {MAX_ATTEMPTS} attempts ({reason})")
+        retry_after = resp.headers.get("Retry-After", "") if resp is not None else ""
+        wait = int(retry_after) if retry_after.isdigit() else min(5 * 2 ** (attempt - 1), 120)
+        print(f"{reason} at offset {params['$offset']:,}; retry {attempt}/{MAX_ATTEMPTS - 1} in {wait}s")
+        time.sleep(wait)
+
+
 def fetch(since: str):
-    headers = {"X-App-Token": os.environ["NYC_APP_TOKEN"]} if os.getenv("NYC_APP_TOKEN") else {}
+    token = os.getenv("NYC_APP_TOKEN")
+    if not token:
+        print("warning: NYC_APP_TOKEN not set - shared IP pool, expect 429 throttling")
+    headers = {"X-App-Token": token} if token else {}
     offset = 0
     while True:
         params = {
@@ -60,9 +90,7 @@ def fetch(since: str):
             "$limit": PAGE_SIZE,
             "$offset": offset,
         }
-        resp = requests.get(ENDPOINT, params=params, headers=headers, timeout=120)
-        resp.raise_for_status()
-        page = resp.json()
+        page = get_page(params, headers)
         if not page:
             return
         yield page
